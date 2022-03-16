@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { BarCodeScanner, PermissionResponse } from 'expo-barcode-scanner';
 import styled from 'styled-components/native';
+// import { RNCamera } from 'react-native-camera';
+import { Camera } from 'expo-camera';
 import { ParamListBase, useFocusEffect, useNavigation } from '@react-navigation/native';
 import BarcodeMask from 'react-native-barcode-mask';
 import { Colors } from '../styles/colors';
@@ -18,7 +20,7 @@ const ScannerScreen = () => {
   useFocusEffect(
     useCallback(() => {
       (async () => {
-        const { status }: PermissionResponse = await BarCodeScanner.requestPermissionsAsync();
+        const { status }: PermissionResponse = await Camera.requestCameraPermissionsAsync();
         console.log('get permissions', status);
         setHasPermission(status === 'granted');
         setScanned(false);
@@ -30,7 +32,7 @@ const ScannerScreen = () => {
     }, []),
   );
 
-  console.log('PermissionResponse', BarCodeScanner.requestPermissionsAsync());
+  console.log('PermissionResponse', Camera.requestCameraPermissionsAsync());
 
   const handleBarCodeScanned = async ({ type, data }: any) => {
     try {
@@ -60,20 +62,34 @@ const ScannerScreen = () => {
   console.log('here');
 
   return (
-    <Container>
+    // <Container>
+    //   <Test>
+    //     <Scanner
+    //       onBarCodeScanned={handleBarCodeScanned}
+    //       onResponderStart={() => console.log('start')}
+    //       style={{
+    //         height: window.height,
+    //         width: window.width,
+    //       }}
+    //     />
+    //   </Test>
+    //   <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
+    //   <Button onPress={goBack}>
+    //     <Text> Tilbage </Text>
+    //   </Button>
+    // </Container>
+
+    <Test>
       <Scanner
         onBarCodeScanned={handleBarCodeScanned}
         onResponderStart={() => console.log('start')}
-        style={{
-          height: window.height,
-          width: window.height,
-        }}
-      />
-      <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
-      <Button onPress={goBack}>
-        <Text> Tilbage </Text>
-      </Button>
-    </Container>
+        style={{ height: window.height, width: window.width }}>
+        <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
+        <Button onPress={goBack}>
+          <Text> Tilbage </Text>
+        </Button>
+      </Scanner>
+    </Test>
   );
 };
 
@@ -82,23 +98,29 @@ export default ScannerScreen;
 const Container = styled.View`
   flex: 1;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  width: 100%;
-  border: 2px solid red;
+  height: 100%;
 `;
 
-const Scanner = styled(BarCodeScanner)`
+const Test = styled.View`
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Scanner = styled(Camera)`
   position: absolute;
-  height: 100px
+  flex: 1;
   width: 200px;
-  border: 1px solid red;
+  height: 100px;
 `;
 
 const Button = styled.TouchableOpacity`
   background-color: ${Colors.BLUE_DARK};
   height: 80px;
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   width: 100%;
   justify-content: center;
   align-items: center;

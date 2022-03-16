@@ -8,15 +8,22 @@ import { BackHandler } from 'react-native';
 import HandleBack from '../handle-back/handle-back.component';
 
 const CRWebView: FC<any> = ({ url }) => {
-  const webviewRef = useRef<any>(null);
+  const webviewRef = useRef<WebView | null>(null);
   //   const appContext = useContext(AppContext);
 
   const onBack = () => {
-    //   if (appContext.url === "/") {
-    //       BackHandler.exitApp();
-    //   }
+    if (appContext.url === '/') {
+      BackHandler.exitApp();
+    }
 
-    webviewRef.current.goBack();
+    try {
+      if (webviewRef.current) {
+        webviewRef.current.canGoBack();
+        webviewRef.current.goBack();
+      }
+    } catch (error) {
+      console.log(error);
+    }
     return true;
   };
 
