@@ -1,18 +1,24 @@
-import React, { FC } from 'react';
+import React from 'react';
 import config from '~/config';
 import CRWebView from '~/app/components/webview/webview.component';
 import ScanButton from '~/app/components/scan-button/scan-button.component';
-import { useRoute } from '@react-navigation/native';
+import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const ProductScreen: FC<any> = ({ navigation }): JSX.Element | null => {
-  const {
-    params: { productUrl },
-  } = useRoute<any>();
+type ParamList = {
+  ProductScreen: {
+    productUrl: string;
+  };
+};
+
+const ProductScreen = () => {
+  const { navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
+  const route = useRoute<RouteProp<ParamList, 'ProductScreen'>>();
 
   return (
     <>
-      <CRWebView url={`${config.uri}${productUrl}?app=true`} />
-      <ScanButton onPress={() => navigation.navigate('Scanner')} />
+      <CRWebView url={`${config.uri}${route.params.productUrl}`} />
+      <ScanButton onPress={() => navigate('Scanner')} />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { PermissionResponse } from 'expo-barcode-scanner';
 import styled from 'styled-components/native';
-import { Camera } from 'expo-camera';
+import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { ParamListBase, useFocusEffect, useNavigation } from '@react-navigation/native';
 import BarcodeMask from 'react-native-barcode-mask';
 import { Colors } from '../styles/colors';
@@ -29,13 +29,14 @@ const ScannerScreen = () => {
     }, []),
   );
 
-  const handleBarCodeScanned = async ({ type, data }: any) => {
+  const handleBarCodeScanned = async ({ data }: BarCodeScanningResult) => {
     try {
       setScanned(true);
       const variant = await getVariantLink(data);
       if (variant.hasOwnProperty('variantRef')) {
         const { variantRef } = variant;
         const productUrl = variantRef.charAt(0) === '/' ? variantRef : `/${variantRef}`;
+        setScanned(false);
         return navigate('Product', { productUrl });
       }
       throw new Error();
@@ -54,7 +55,9 @@ const ScannerScreen = () => {
 
   return (
     <Container>
-      <Scanner onBarCodeScanned={handleBarCodeScanned} style={{ height: window.height, width: window.width }}>
+      <Scanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={{ height: window.height, width: window.width }}>
         <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
         <Button onPress={goBack}>
           <Text> Tilbage </Text>

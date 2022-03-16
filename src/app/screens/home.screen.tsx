@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ScanButton from '../components/scan-button/scan-button.component';
