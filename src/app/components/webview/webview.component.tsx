@@ -1,24 +1,25 @@
 import React, { FC, useRef, useContext } from 'react';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
-// import handleRequest from "../../utils/handle-request";
+import handleRequest from '~/app/components/handle-request';
 // import HandleBack from "../../utils/handle-back";
-// import { AppContext } from "../../app-context";
+import { setUrl, useAppDispatch, useAppState } from '~/app/app.context';
 // import styles from "./cr-webview.styles";
 import { BackHandler } from 'react-native';
 import HandleBack from '../handle-back/handle-back.component';
 
 const CRWebView: FC<any> = ({ url }) => {
   const webviewRef = useRef<WebView | null>(null);
+  const dispatch = useAppDispatch();
+  const { url: currentUrl } = useAppState();
   //   const appContext = useContext(AppContext);
 
   const onBack = () => {
-    if (appContext.url === '/') {
-      BackHandler.exitApp();
-    }
-
     try {
+      if (currentUrl === '/') {
+        BackHandler.exitApp();
+      }
+
       if (webviewRef.current) {
-        webviewRef.current.canGoBack();
         webviewRef.current.goBack();
       }
     } catch (error) {
@@ -52,14 +53,14 @@ const CRWebView: FC<any> = ({ url }) => {
             true;
           `}
         onMessage={({ nativeEvent: state }) => {
-          //   try {
-          //     const data = JSON.parse(state.data);
-          //     if (data.type === "navigationStateChange") {
-          //       appContext.url = data.url;
-          //     }
-          //   } catch (e) {
-          //     console.warn(e);
-          //   }
+          try {
+            const data = JSON.parse(state.data);
+            if (data.type === 'navigationStateChange') {
+              setUrl(dispatch, data.url);
+            }
+          } catch (e) {
+            console.warn(e);
+          }
         }}
         domStorageEnabled={true}
         javaScriptEnabled={true}
@@ -71,7 +72,7 @@ const CRWebView: FC<any> = ({ url }) => {
         originWhitelist={['*']}
         ref={webviewRef}
         allowsBackForwardNavigationGestures={true}
-        // onShouldStartLoadWithRequest={handleRequest}
+        onShouldStartLoadWithRequest={handleRequest}
       />
     </HandleBack>
   );

@@ -61,3 +61,7 @@ export const useAppDispatch = () => {
 
   return context;
 };
+
+export const setUrl = (dispatch: Dispatch, url: string) => {
+  dispatch({ type: AppActionTypes.SetUrl, url });
+};

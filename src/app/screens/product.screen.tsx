@@ -9,8 +9,6 @@ const ProductScreen: FC<any> = ({ navigation }): JSX.Element | null => {
     params: { productUrl },
   } = useRoute<any>();
 
-  console.log(`${config.uri}${productUrl}`);
-
   return (
     <>
       <CRWebView url={`${config.uri}${productUrl}?app=true`} />
