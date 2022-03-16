@@ -2,7 +2,7 @@
   "expo": {
     "name": "carl-ras-expo",
     "slug": "carl-ras-expo",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -15,12 +15,14 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "org.reactjs.native.example.crnative",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "We would like access the camera for the barcode scanner feature"
       }
     },
     "android": {
+      "package": "org.reactjs.native.example.crnative",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
