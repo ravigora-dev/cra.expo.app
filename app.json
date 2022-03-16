@@ -19,14 +19,16 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "We would like access the camera for the barcode scanner feature"
-      }
+      },
+      "buildNumber": "2"
     },
     "android": {
       "package": "org.reactjs.native.example.crnative",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
