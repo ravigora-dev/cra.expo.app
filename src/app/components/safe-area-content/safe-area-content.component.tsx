@@ -5,8 +5,6 @@ import { Colors } from '~/app/styles/colors';
 
 export const SafeAreaContent: FC = ({ children }) => {
   const inserts = useSafeAreaInsets();
-  console.log('inserts', inserts);
-
   return <StyledSafeAreaContent inserts={inserts}>{children}</StyledSafeAreaContent>;
 };
 
