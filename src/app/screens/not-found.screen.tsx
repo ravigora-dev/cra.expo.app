@@ -16,7 +16,7 @@ const NotFoundScreen = () => {
     <>
       <View>
         <Text>Produktet blev ikke fundet!</Text>
-        <Text>Stregkode: {route.params.barcode}</Text>
+        <Text>Stregkode: {route?.params?.barcode}</Text>
       </View>
       <ScanButton onPress={() => navigate('Scanner')} />
     </>

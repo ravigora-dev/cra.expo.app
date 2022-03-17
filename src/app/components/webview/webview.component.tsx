@@ -1,4 +1,4 @@
-import React, { FC, useRef, useContext } from 'react';
+import React, { FC, useRef, useContext, useState } from 'react';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import handleRequest from '~/app/components/handle-request';
 // import HandleBack from "../../utils/handle-back";
@@ -9,17 +9,10 @@ import HandleBack from '../handle-back/handle-back.component';
 
 const CRWebView: FC<any> = ({ url }) => {
   const webviewRef = useRef<WebView | null>(null);
-  const dispatch = useAppDispatch();
-  const { url: currentUrl } = useAppState();
-  //   const appContext = useContext(AppContext);
-
+  const [canGoBack, setCanGoBack] = useState<boolean>(false);
   const onBack = () => {
     try {
-      if (currentUrl === '/') {
-        BackHandler.exitApp();
-      }
-
-      if (webviewRef.current) {
+      if (webviewRef.current && canGoBack) {
         webviewRef.current.goBack();
       }
     } catch (error) {
@@ -31,43 +24,14 @@ const CRWebView: FC<any> = ({ url }) => {
   return (
     <HandleBack onBack={onBack}>
       <WebView
-        // style={styles.container}
-        decelerationRate="normal"
-        injectedJavaScript={`
-            (function() {
-              function wrap(fn) {
-                return function wrapper() {
-                  var res = fn.apply(this, arguments);
-                  window.ReactNativeWebView.postMessage(JSON.stringify({type: "navigationStateChange", url: window.location.pathname}));
-                  return res;
-                }
-              }
-        
-              history.pushState = wrap(history.pushState);
-              history.replaceState = wrap(history.replaceState);
-              window.addEventListener('popstate', function() {
-                window.ReactNativeWebView.postMessage(JSON.stringify({type: "navigationStateChange", url: window.location.pathname}));
-              });
-            })();
-        
-            true;
-          `}
-        onMessage={({ nativeEvent: state }) => {
-          try {
-            const data = JSON.parse(state.data);
-            if (data.type === 'navigationStateChange') {
-              setUrl(dispatch, data.url);
-            }
-          } catch (e) {
-            console.warn(e);
-          }
-        }}
-        domStorageEnabled={true}
-        javaScriptEnabled={true}
-        bounces={false}
         source={{
           uri: url,
         }}
+        onNavigationStateChange={() => setCanGoBack(true)}
+        decelerationRate="normal"
+        domStorageEnabled={true}
+        javaScriptEnabled={true}
+        bounces={false}
         allowFileAccess={true}
         originWhitelist={['*']}
         ref={webviewRef}
