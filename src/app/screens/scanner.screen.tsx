@@ -88,7 +88,7 @@ const Button = styled.TouchableOpacity`
   background-color: ${Colors.BLUE_DARK};
   height: 80px;
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   width: 100%;
   justify-content: center;
   align-items: center;
