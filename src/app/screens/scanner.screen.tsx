@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { PermissionResponse } from 'expo-barcode-scanner';
 import styled from 'styled-components/native';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
-import { ParamListBase, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { ParamListBase, useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import BarcodeMask from 'react-native-barcode-mask';
 import { Colors } from '../styles/colors';
 import { getVariantLink } from '~/app/lib/use-search';
@@ -15,6 +15,7 @@ const ScannerScreen = () => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const { goBack, navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
+  const isFocused = useIsFocused();
 
   useFocusEffect(
     useCallback(() => {
@@ -31,7 +32,6 @@ const ScannerScreen = () => {
 
   const handleBarCodeScanned = async ({ data }: BarCodeScanningResult) => {
     try {
-      setScanned(true);
       const variant = await getVariantLink(data);
       if (variant.hasOwnProperty('variantRef')) {
         const { variantRef } = variant;
@@ -55,14 +55,16 @@ const ScannerScreen = () => {
 
   return (
     <Container>
-      <Scanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={{ height: window.height, width: window.width }}>
-        <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
-        <Button onPress={goBack}>
-          <Text> Tilbage </Text>
-        </Button>
-      </Scanner>
+      {isFocused && (
+        <Scanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={{ height: window.height, width: window.width }}>
+          <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
+          <Button onPress={goBack}>
+            <Text> Tilbage </Text>
+          </Button>
+        </Scanner>
+      )}
     </Container>
   );
 };
