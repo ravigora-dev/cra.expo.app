@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "crnative",
+    "name": "Carl Ras",
+    "description": "Carl Ras",
     "slug": "carl-ras-expo",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -20,7 +21,7 @@
       "infoPlist": {
         "NSCameraUsageDescription": "We would like access the camera for the barcode scanner feature"
       },
-      "buildNumber": "4"
+      "buildNumber": "15"
     },
     "android": {
       "package": "com.crnative",
@@ -28,7 +29,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "versionCode": 14
+      "versionCode": 15
     },
     "web": {
       "favicon": "./assets/favicon.png"
