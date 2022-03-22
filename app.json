@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "carl-ras-expo",
+    "name": "crnative",
     "slug": "carl-ras-expo",
     "version": "2.0.0",
     "orientation": "portrait",
@@ -20,15 +20,15 @@
       "infoPlist": {
         "NSCameraUsageDescription": "We would like access the camera for the barcode scanner feature"
       },
-      "buildNumber": "3"
+      "buildNumber": "4"
     },
     "android": {
-      "package": "org.reactjs.native.example.crnative",
+      "package": "com.crnative",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "versionCode": 3
+      "versionCode": 14
     },
     "web": {
       "favicon": "./assets/favicon.png"
