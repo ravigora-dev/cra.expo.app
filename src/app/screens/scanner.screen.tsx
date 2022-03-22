@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Dimensions, SafeAreaView } from 'react-native';
-import { QueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 import { PermissionResponse } from 'expo-barcode-scanner';
 import styled from 'styled-components/native';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
@@ -13,9 +13,9 @@ import { getVariantLink } from '~/app/utils/getVariantLink';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const window = Dimensions.get('window');
-const queryClient = new QueryClient();
 
 const ScannerScreen = () => {
+  const queryClient = useQueryClient();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const { goBack, navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
