@@ -10,7 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Colors } from '../styles/colors';
 import { VariantLink } from '~/models';
 import { getVariantLink } from '~/app/utils/getVariantLink';
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const window = Dimensions.get('window');
 const queryClient = new QueryClient();
 
@@ -19,6 +19,7 @@ const ScannerScreen = () => {
   const [scanned, setScanned] = useState(false);
   const { goBack, navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
   const isFocused = useIsFocused();
+  const inserts = useSafeAreaInsets();
 
   useFocusEffect(
     useCallback(() => {
@@ -63,7 +64,7 @@ const ScannerScreen = () => {
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={{ height: window.height, width: window.width }}>
           <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
-          <Button onPress={goBack}>
+          <Button onPress={goBack} bottom={inserts?.bottom}>
             <Text> Tilbage </Text>
           </Button>
         </Scanner>
@@ -87,11 +88,11 @@ const Scanner = styled(Camera)`
   height: 100px;
 `;
 
-const Button = styled.TouchableOpacity`
+const Button = styled.TouchableOpacity<{ bottom: number }>`
   background-color: ${Colors.BLUE_DARK};
   height: 80px;
   position: absolute;
-  bottom: 0;
+  bottom: ${({ bottom }) => `${bottom}px`};
   width: 100%;
   justify-content: center;
   align-items: center;
