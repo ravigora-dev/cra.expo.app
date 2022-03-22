@@ -1,4 +1,10 @@
 import { Linking, Platform } from 'react-native';
+import { WebViewNativeEvent } from 'react-native-webview/lib/WebViewTypes';
+
+enum EvenTypes {
+  Tel = 'tel',
+  Mailto = 'mailto',
+}
 
 const canOpen = async (url: string) => {
   try {
@@ -13,15 +19,15 @@ const canOpen = async (url: string) => {
   }
 };
 
-const handleRequest = (event: any) => {
+const handleRequest = (event: WebViewNativeEvent) => {
   const { url } = event;
-  if (url.slice(0, 3) === 'tel') {
+  if (url.slice(0, 3) === EvenTypes.Tel) {
     let phoneNumber = Platform.OS === 'ios' ? url.replace('tel', 'telprompt') : url;
     canOpen(phoneNumber);
     return false;
   }
 
-  if (url.slice(0, 6) === 'mailto') {
+  if (url.slice(0, 6) === EvenTypes.Mailto) {
     canOpen(url);
     return false;
   }

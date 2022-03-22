@@ -3,6 +3,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppProvider from '~/app/app.context';
 import { SafeAreaContent } from '~/app/components/safe-area-content/safe-area-content.component';
 import { MainNavigation } from '~/app/navigation/main.navigation';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
@@ -10,7 +13,9 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaContent>
           <StatusBar style="light" />
-          <MainNavigation />
+          <QueryClientProvider client={queryClient}>
+            <MainNavigation />
+          </QueryClientProvider>
         </SafeAreaContent>
       </SafeAreaProvider>
     </AppProvider>

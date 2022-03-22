@@ -28,8 +28,8 @@
     "react-native-screens": "~3.10.1",
     "react-native-web": "0.17.1",
     "react-native-webview": "^11.15.0",
+    "react-query": "^3.34.16",
     "styled-components": "^5.3.3",
-    "swr": "^1.1.1",
     "use-immer": "^0.6.0"
   },
   "devDependencies": {

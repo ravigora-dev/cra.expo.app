@@ -1,10 +1,11 @@
 import React from 'react';
-import config from '~/config';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import CRWebView from '~/app/components/webview/webview.component';
 import ScanButton from '~/app/components/scan-button/scan-button.component';
-import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import HandleBack from '~/app/components/handle-back/handle-back.component';
+import config from '~/app/config';
+
 type ParamList = {
   ProductScreen: {
     productUrl: string;
@@ -13,7 +14,8 @@ type ParamList = {
 
 const ProductScreen = () => {
   const { navigate, goBack, canGoBack } = useNavigation<StackNavigationProp<ParamListBase>>();
-  const route = useRoute<RouteProp<ParamList, 'ProductScreen'>>();
+  const { params } = useRoute<RouteProp<ParamList, 'ProductScreen'>>();
+  const url = new URL(params.productUrl, config.BASE_URL);
 
   const handleGoBack = () => {
     if (canGoBack()) {
@@ -23,7 +25,7 @@ const ProductScreen = () => {
 
   return (
     <HandleBack onBack={handleGoBack}>
-      <CRWebView url={`${config.uri}${route.params.productUrl}`} withGoBack={false} />
+      <CRWebView url={url.href} withGoBack={false} />
       <ScanButton onPress={() => navigate('Scanner')} />
     </HandleBack>
   );

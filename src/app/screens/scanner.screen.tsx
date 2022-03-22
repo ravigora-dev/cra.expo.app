@@ -1,15 +1,18 @@
 import React, { useState, useCallback } from 'react';
+import { Dimensions, SafeAreaView } from 'react-native';
+import { QueryClient } from 'react-query';
 import { PermissionResponse } from 'expo-barcode-scanner';
 import styled from 'styled-components/native';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { ParamListBase, useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import BarcodeMask from 'react-native-barcode-mask';
-import { Colors } from '../styles/colors';
-import { getVariantLink } from '~/app/lib/use-search';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Dimensions } from 'react-native';
+import { Colors } from '../styles/colors';
+import { VariantLink } from '~/models';
+import { getVariantLink } from '~/app/utils/getVariantLink';
 
 const window = Dimensions.get('window');
+const queryClient = new QueryClient();
 
 const ScannerScreen = () => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -32,14 +35,14 @@ const ScannerScreen = () => {
 
   const handleBarCodeScanned = async ({ data }: BarCodeScanningResult) => {
     try {
-      const variant = await getVariantLink(data);
-      if (variant.hasOwnProperty('variantRef')) {
-        const { variantRef } = variant;
-        const productUrl = variantRef.charAt(0) === '/' ? variantRef : `/${variantRef}`;
-        setScanned(false);
+      setScanned(true);
+
+      const variant: VariantLink = await queryClient.fetchQuery(data, () => getVariantLink(data));
+
+      if (variant?.variantRef) {
+        const productUrl = variant?.variantRef.replace(/(^\/)\/+/g, '$1');
         return navigate('Product', { productUrl });
       }
-      throw new Error();
     } catch (error) {
       return navigate('NotFound');
     }
@@ -71,7 +74,7 @@ const ScannerScreen = () => {
 
 export default ScannerScreen;
 
-const Container = styled.View`
+const Container = styled(SafeAreaView)`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
