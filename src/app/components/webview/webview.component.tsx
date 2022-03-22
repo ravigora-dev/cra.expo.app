@@ -3,7 +3,12 @@ import { WebView } from 'react-native-webview';
 import handleRequest from '~/app/components/handle-request';
 import HandleBack from '../handle-back/handle-back.component';
 
-const CRWebView: FC<any> = ({ url, withGoBack = true }) => {
+type Props = {
+  url: string;
+  withGoBack: boolean;
+};
+
+const CRWebView: FC<Props> = ({ url, withGoBack = true }) => {
   const webviewRef = useRef<WebView | null>(null);
 
   const onBack = () => {
@@ -14,6 +19,7 @@ const CRWebView: FC<any> = ({ url, withGoBack = true }) => {
     } catch (error) {
       console.log(error);
     }
+
     return true;
   };
 

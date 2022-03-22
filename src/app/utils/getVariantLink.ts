@@ -10,15 +10,18 @@ export const getVariantLink = async (barcode: string) => {
     });
 
     if (!response.ok) {
-      const error: ResponseError = new Error('fetcher.ts: An error occurred while fetching the data.');
+      const error: ResponseError = new Error('An error occurred while fetching the data.');
       error.info = await response.json();
       error.status = response.status;
       throw error;
     }
 
-    const result = await response.json();
-
-    return result;
+    try {
+      const result = await response.json();
+      return result;
+    } catch {
+      throw new Error('An error occurred while getting json response');
+    }
   } catch (e: any) {
     throw new Error(e);
   }

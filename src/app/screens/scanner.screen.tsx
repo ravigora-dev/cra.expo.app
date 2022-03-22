@@ -11,6 +11,7 @@ import { Colors } from '../styles/colors';
 import { VariantLink } from '~/models';
 import { getVariantLink } from '~/app/utils/getVariantLink';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
+
 const window = Dimensions.get('window');
 const queryClient = new QueryClient();
 
@@ -44,7 +45,7 @@ const ScannerScreen = () => {
         const productUrl = variant?.variantRef.replace(/(^\/)\/+/g, '$1');
         return navigate('Product', { productUrl });
       }
-    } catch (error) {
+    } catch {
       return navigate('NotFound');
     }
   };
