@@ -33,7 +33,7 @@ const Button = styled.TouchableOpacity<{ inserts: EdgeInsets }>`
   justify-content: center;
   left: ${buttonLeftPosition}px;
   background-color: ${Colors.BLACK};
-  bottom: ${({ inserts }) => inserts.bottom / 2}px;
+  bottom: ${({ inserts }) => inserts.bottom / 1.5}px;
 `;
 
 const Text = styled.Text`
