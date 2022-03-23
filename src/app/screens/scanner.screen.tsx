@@ -11,6 +11,7 @@ import { Colors } from '../styles/colors';
 import { AppScreens, VariantLink } from '~/models';
 import { getVariantLink } from '~/app/utils/getVariantLink';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CameraType } from 'expo-camera/build/Camera.types';
 
 const window = Dimensions.get('window');
 
@@ -35,20 +36,22 @@ const ScannerScreen = () => {
     }, []),
   );
 
-  const handleBarCodeScanned = async ({ data }: BarCodeScanningResult) => {
+  const handleBarCodeScanned = async ({ data, type }: BarCodeScanningResult) => {
     try {
-      setScanned(true);
+      if (data && type) {
+        setScanned(true);
+        const variant: VariantLink = await queryClient.fetchQuery(data, () => getVariantLink(data));
 
-      const variant: VariantLink = await queryClient.fetchQuery(data, () => getVariantLink(data));
-
-      if (variant?.variantRef) {
-        const productUrl = variant?.variantRef.replace(/(^\/)\/+/g, '$1');
-        return navigate(AppScreens.Product, { productUrl });
+        if (variant?.variantRef) {
+          const productUrl = variant?.variantRef.replace(/(^\/)\/+/g, '$1');
+          return navigate(AppScreens.Product, { productUrl });
+        } else {
+          return navigate(AppScreens.NotFound);
+        }
       }
-
-      throw new Error('Varient not found');
-    } catch {
-      return navigate(AppScreens.NotFound);
+    } catch (e) {
+      // TODO: Implement error handling
+      console.log(e);
     }
   };
 
@@ -65,6 +68,7 @@ const ScannerScreen = () => {
       {isFocused && (
         <Scanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          type={CameraType.back}
           style={{ height: window.height, width: window.width }}>
           <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
           <Button onPress={goBack} inserts={inserts}>
