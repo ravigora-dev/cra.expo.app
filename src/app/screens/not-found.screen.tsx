@@ -1,26 +1,20 @@
 import React from 'react';
-import { ParamListBase, useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ScanButton from '../components/scan-button/scan-button.component';
 import styled from 'styled-components/native';
 import { Colors } from '~/app/styles/colors';
 import logo from '~/app/assets/logo.png';
+import { AppScreens } from '~/models';
 
-type ParamList = {
-  NotFoundScreen: {
-    barcode: string;
-  };
-};
 const NotFoundScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
-  const route = useRoute<RouteProp<ParamList, 'NotFoundScreen'>>();
-
   return (
     <Container>
       <StyledImage source={logo} />
       <Spacer space={10} />
       <StyledText>Produktet blev desværre ikke fundet!</StyledText>
-      <ScanButton onPress={() => navigate('Scanner')} />
+      <ScanButton onPress={() => navigate(AppScreens.Product)} />
     </Container>
   );
 };

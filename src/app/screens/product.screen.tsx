@@ -5,6 +5,7 @@ import CRWebView from '~/app/components/webview/webview.component';
 import ScanButton from '~/app/components/scan-button/scan-button.component';
 import HandleBack from '~/app/components/handle-back/handle-back.component';
 import config from '~/app/config';
+import { AppScreens } from '~/models';
 
 type ParamList = {
   ProductScreen: {
@@ -26,7 +27,7 @@ const ProductScreen = () => {
   return (
     <HandleBack onBack={handleGoBack}>
       <CRWebView url={url.href} withGoBack={false} />
-      <ScanButton onPress={() => navigate('Scanner')} />
+      <ScanButton onPress={() => navigate(AppScreens.Scanner)} />
     </HandleBack>
   );
 };

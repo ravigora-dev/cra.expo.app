@@ -8,7 +8,7 @@ import { ParamListBase, useFocusEffect, useIsFocused, useNavigation } from '@rea
 import BarcodeMask from 'react-native-barcode-mask';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Colors } from '../styles/colors';
-import { VariantLink } from '~/models';
+import { AppScreens, VariantLink } from '~/models';
 import { getVariantLink } from '~/app/utils/getVariantLink';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -43,10 +43,12 @@ const ScannerScreen = () => {
 
       if (variant?.variantRef) {
         const productUrl = variant?.variantRef.replace(/(^\/)\/+/g, '$1');
-        return navigate('Product', { productUrl });
+        return navigate(AppScreens.Product, { productUrl });
       }
+
+      throw new Error('Varient not found');
     } catch {
-      return navigate('NotFound');
+      return navigate(AppScreens.NotFound);
     }
   };
 

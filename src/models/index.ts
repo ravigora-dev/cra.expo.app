@@ -9,3 +9,10 @@ export type VariantLink = {
   variantName: string;
   variantRef: string;
 };
+
+export enum AppScreens {
+  Home = 'Home',
+  Scanner = 'Scanner',
+  Product = 'Product',
+  NotFound = 'NotFound',
+}

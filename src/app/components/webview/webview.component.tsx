@@ -5,7 +5,7 @@ import HandleBack from '../handle-back/handle-back.component';
 
 type Props = {
   url: string;
-  withGoBack: boolean;
+  withGoBack?: boolean;
 };
 
 const CRWebView: FC<Props> = ({ url, withGoBack = true }) => {
