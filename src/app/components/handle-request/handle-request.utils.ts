@@ -13,7 +13,8 @@ const canOpen = async (url: string) => {
     if (!canOpen) {
       return false;
     }
-    return Linking.canOpenURL(url);
+
+    return Linking.openURL(url);
   } catch (e) {
     console.log(e);
   }
@@ -22,7 +23,9 @@ const canOpen = async (url: string) => {
 const handleRequest = (event: WebViewNativeEvent) => {
   const { url } = event;
   if (url.slice(0, 3) === EvenTypes.Tel) {
-    let phoneNumber = Platform.OS === 'ios' ? url.replace('tel', 'telprompt') : url;
+    console.log('is phone');
+
+    const phoneNumber = Platform.OS === 'ios' ? url.replace('tel', 'telprompt') : url;
     canOpen(phoneNumber);
     return false;
   }
