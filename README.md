@@ -30,7 +30,7 @@ yarn install
 
 ### 3) Install expo app from app store
 
-Open apple/android store and install expo app
+Open apple/android store and install expo app on your phone
 
 ### 4) Run app
 
