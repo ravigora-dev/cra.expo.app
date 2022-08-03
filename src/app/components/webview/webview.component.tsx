@@ -1,4 +1,5 @@
 import React, { FC, useRef } from 'react';
+import { Keyboard } from 'react-native';
 import { WebView } from 'react-native-webview';
 import handleRequest from '~/app/components/handle-request';
 import HandleBack from '../handle-back/handle-back.component';
@@ -38,6 +39,8 @@ const CRWebView: FC<Props> = ({ url, withGoBack = true }) => {
         ref={webviewRef}
         allowsBackForwardNavigationGestures={true}
         onShouldStartLoadWithRequest={handleRequest}
+        hideKeyboardAccessoryView={true}
+        onNavigationStateChange={() => Keyboard.dismiss()}
       />
     </HandleBack>
   );

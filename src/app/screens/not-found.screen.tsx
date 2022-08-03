@@ -14,7 +14,7 @@ const NotFoundScreen = () => {
       <StyledImage source={logo} />
       <Spacer space={10} />
       <StyledText>Produktet blev desværre ikke fundet!</StyledText>
-      <ScanButton onPress={() => navigate(AppScreens.Product)} />
+      <ScanButton onPress={() => navigate(AppScreens.Scanner)} />
     </Container>
   );
 };

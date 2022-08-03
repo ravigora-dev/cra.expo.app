@@ -51,6 +51,8 @@ const ScannerScreen = () => {
       }
     } catch (e) {
       // TODO: Implement error handling
+      return navigate(AppScreens.NotFound);
+      // return undefined;
       console.log(e);
     }
   };
