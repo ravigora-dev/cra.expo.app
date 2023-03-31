@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Dimensions, SafeAreaView } from 'react-native';
+import { Dimensions, Platform, SafeAreaView, useWindowDimensions } from 'react-native';
 import { useQueryClient } from 'react-query';
 import { PermissionResponse } from 'expo-barcode-scanner';
 import styled from 'styled-components/native';
@@ -13,8 +13,6 @@ import { getVariantLink } from '~/app/utils/getVariantLink';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraType } from 'expo-camera/build/Camera.types';
 
-const window = Dimensions.get('window');
-
 const ScannerScreen = () => {
   const queryClient = useQueryClient();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -22,6 +20,7 @@ const ScannerScreen = () => {
   const { goBack, navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
   const isFocused = useIsFocused();
   const inserts = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
 
   useFocusEffect(
     useCallback(() => {
@@ -71,11 +70,22 @@ const ScannerScreen = () => {
         <Scanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           type={CameraType.back}
-          style={{ height: window.height, width: window.width }}>
-          <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
-          <Button onPress={goBack} inserts={inserts}>
-            <Text> Tilbage </Text>
-          </Button>
+          style={{ height: height, width: width }}>
+          {Platform.OS === 'ios' ? (
+            <>
+              <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
+              <Button onPress={goBack} inserts={inserts}>
+                <Text> Tilbage </Text>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button onPress={goBack} inserts={inserts}>
+                <Text> Tilbage </Text>
+              </Button>
+              <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
+            </>
+          )}
         </Scanner>
       )}
     </Container>

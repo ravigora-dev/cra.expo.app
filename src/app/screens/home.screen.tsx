@@ -1,10 +1,10 @@
-import React from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import React from 'react';
+import config from '~/app/config';
+import { AppScreens } from '~/models';
 import ScanButton from '../components/scan-button/scan-button.component';
 import CRWebView from '../components/webview/webview.component';
-import { AppScreens } from '~/models';
-import config from '~/app/config';
 
 const HomeScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<ParamListBase>>();

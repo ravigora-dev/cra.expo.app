@@ -63,7 +63,7 @@ For details about versioning see [Semantic Versioning](https://semver.org/)
 ### Android
 
 ```bash
-expo build:android
+eas build --platform android
 
 ✔ Choose the build type you would like: › apk
 ```
@@ -80,7 +80,7 @@ Successfully built standalone app: https://expo.dev/artifacts/xxxxxxx-xxxxx-xxxx
 ### iOS
 
 ```bash
-expo build:ios
+eas build --platform ios
 
 Choose the build type you would like: › archive
 

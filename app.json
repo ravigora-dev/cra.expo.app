@@ -3,8 +3,7 @@
     "name": "Carl Ras",
     "description": "Carl Ras",
     "slug": "carl-ras-expo",
-    "version": "2.0.3",
-    "orientation": "portrait",
+    "version": "2.0.4",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -14,14 +13,16 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "org.reactjs.native.example.crnative",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "We would like access the camera for the barcode scanner feature"
       },
-      "buildNumber": "3"
+      "buildNumber": "4"
     },
     "android": {
       "package": "com.crnative",
@@ -29,10 +30,15 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "versionCode": 18
+      "versionCode": 19
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b17e9496-5423-46a7-b224-a9bdf2e93ab8"
+      }
     }
   }
 }
