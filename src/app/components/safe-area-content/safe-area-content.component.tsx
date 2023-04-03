@@ -3,7 +3,11 @@ import styled from 'styled-components/native';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '~/app/styles/colors';
 
-export const SafeAreaContent: FC = ({ children }) => {
+type Props = {
+  children: React.ReactNode;
+};
+
+export const SafeAreaContent: FC<Props> = ({ children }) => {
   const inserts = useSafeAreaInsets();
   return <StyledSafeAreaContent inserts={inserts}>{children}</StyledSafeAreaContent>;
 };

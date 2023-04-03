@@ -5,6 +5,10 @@ export enum AppActionTypes {
   SetUrl = 'SetUrl',
 }
 
+type Props = {
+  children: React.ReactNode;
+};
+
 type State = {
   url: string;
 };
@@ -28,8 +32,8 @@ type Dispatch = (action: Action) => void;
 const AppContext = createContext<State | undefined>(undefined);
 const ProviderContext = createContext<Dispatch | undefined>(undefined);
 
-const AppProvider: FC = ({ children }) => {
-  const [state, dispatch] = useImmerReducer<State>(reducer, {
+const AppProvider: FC<Props> = ({ children }) => {
+  const [state, dispatch] = useImmerReducer<State, Action>(reducer, {
     url: '/',
   });
 
