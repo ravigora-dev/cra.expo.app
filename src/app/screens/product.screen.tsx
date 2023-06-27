@@ -17,6 +17,7 @@ const ProductScreen = () => {
   const { navigate, goBack, canGoBack } = useNavigation<StackNavigationProp<ParamListBase>>();
   const { params } = useRoute<RouteProp<ParamList, 'ProductScreen'>>();
   const url = new URL(params.productUrl, config.BASE_URL);
+  url.searchParams.append('app', 'true');
 
   const handleGoBack = () => {
     if (canGoBack()) {

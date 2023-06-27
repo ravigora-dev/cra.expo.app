@@ -35,7 +35,7 @@ Open apple/android store and install expo app on your phone
 ### 4) Run app
 
 ```bash
-yarn start
+Expo start
 ```
 
 Scann QR and open in expo app
