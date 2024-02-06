@@ -20,7 +20,7 @@ const canOpen = async (url: string) => {
   }
 };
 
-const handleRequest = (event: WebViewNativeEvent) => {
+export default function handleRequest(event: WebViewNativeEvent) {
   const { url } = event;
   if (url.slice(0, 3) === EvenTypes.Tel) {
     console.log('is phone');
@@ -36,6 +36,4 @@ const handleRequest = (event: WebViewNativeEvent) => {
   }
 
   return true;
-};
-
-export default handleRequest;
+}

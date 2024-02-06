@@ -1,9 +1,9 @@
-import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import CRWebView from '~/app/components/webview/webview.component';
-import ScanButton from '~/app/components/scan-button/scan-button.component';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React from 'react';
 import HandleBack from '~/app/components/handle-back/handle-back.component';
+import ScanButton from '~/app/components/scan-button/scan-button.component';
+import CRWebView from '~/app/components/webview/webview.component';
 import config from '~/app/config';
 import { AppScreens } from '~/models';
 
@@ -13,7 +13,7 @@ type ParamList = {
   };
 };
 
-const ProductScreen = () => {
+export default function ProductScreen() {
   const { navigate, goBack, canGoBack } = useNavigation<StackNavigationProp<ParamListBase>>();
   const { params } = useRoute<RouteProp<ParamList, 'ProductScreen'>>();
   const url = new URL(params.productUrl, config.BASE_URL);
@@ -28,9 +28,8 @@ const ProductScreen = () => {
   return (
     <HandleBack onBack={handleGoBack}>
       <CRWebView url={url.href} withGoBack={false} />
-      <ScanButton onPress={() => navigate(AppScreens.Scanner)} />
+      <ScanButton text="Scan" onPress={() => navigate(AppScreens.Scanner)} />
     </HandleBack>
   );
 };
 
-export default ProductScreen;

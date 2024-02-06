@@ -1,25 +1,25 @@
-import React, { useState, useCallback } from 'react';
-import { Dimensions, Platform, SafeAreaView, useWindowDimensions } from 'react-native';
-import { useQueryClient } from 'react-query';
-import { PermissionResponse } from 'expo-barcode-scanner';
-import styled from 'styled-components/native';
-import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { ParamListBase, useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
-import BarcodeMask from 'react-native-barcode-mask';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Colors } from '../styles/colors';
-import { AppScreens, VariantLink } from '~/models';
-import { getVariantLink } from '~/app/utils/getVariantLink';
-import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { PermissionResponse } from 'expo-barcode-scanner';
+import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { CameraType } from 'expo-camera/build/Camera.types';
+import React, { useCallback, useState } from 'react';
+import { Platform, SafeAreaView, useWindowDimensions } from 'react-native';
+import BarcodeMask from 'react-native-barcode-mask';
+import { useQueryClient } from 'react-query';
+import styled from 'styled-components/native';
+import { getVariantLink } from '~/app/utils/getVariantLink';
+import { AppScreens, VariantLink } from '~/models';
+import ScanButton from '../components/scan-button/scan-button.component';
+import { isTablet } from '../helpers/settings';
+import { Colors } from '../styles/colors';
 
-const ScannerScreen = () => {
+export default function ScannerScreen() {
   const queryClient = useQueryClient();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
-  const { goBack, navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
+  const { navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
   const isFocused = useIsFocused();
-  const inserts = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
 
   useFocusEffect(
@@ -70,19 +70,20 @@ const ScannerScreen = () => {
         <Scanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           type={CameraType.back}
-          style={{ height: height, width: width }}>
+          style={{ height: height, width: width }}
+        >
           {Platform.OS === 'ios' ? (
             <>
               <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
-              <Button onPress={goBack} inserts={inserts}>
-                <Text> Tilbage </Text>
-              </Button>
+              <ScanButtonWrapper>
+                <ScanButton text='Tilbage' onPress={() => navigate(AppScreens.Home)} />
+              </ScanButtonWrapper>
             </>
           ) : (
             <>
-              <Button onPress={goBack} inserts={inserts}>
-                <Text> Tilbage </Text>
-              </Button>
+              <AndroidTabletWrapper>
+                <ScanButton text='Tilbage' onPress={() => navigate(AppScreens.Home)} />
+              </AndroidTabletWrapper>
               <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
             </>
           )}
@@ -91,8 +92,6 @@ const ScannerScreen = () => {
     </Container>
   );
 };
-
-export default ScannerScreen;
 
 const Container = styled(SafeAreaView)`
   flex-grow: 1;
@@ -107,16 +106,20 @@ const Scanner = styled(Camera)`
   height: 100px;
 `;
 
-const Button = styled.TouchableOpacity<{ inserts: EdgeInsets }>`
-  background-color: ${Colors.BLUE_DARK};
-  height: 90px;
-  position: absolute;
-  bottom: ${({ inserts }) => inserts.bottom / 1.5}px;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+const ScanButtonWrapper = styled.View`
+  flex: 1;
+  bottom: ${isTablet ? 14 : 25}px;
 `;
+
+const AndroidTabletWrapper = styled.View`
+  flex: 1;
+  bottom: ${isTablet ? 14 : 0}px;
+`
 
 const Text = styled.Text`
   color: ${Colors.WHITE};
+  text-align: center;
+  font-size: 16px;
+  text-Transform: uppercase;
+  margin-left: -6px;
 `;

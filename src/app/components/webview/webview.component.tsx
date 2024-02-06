@@ -9,7 +9,7 @@ type Props = {
   withGoBack?: boolean;
 };
 
-const CRWebView: FC<Props> = ({ url, withGoBack = true }) => {
+export default function CRWebView({ url, withGoBack = true }: Props) {
   const webviewRef = useRef<WebView | null>(null);
 
   const onBack = () => {
@@ -74,5 +74,3 @@ const CRWebView: FC<Props> = ({ url, withGoBack = true }) => {
     </HandleBack>
   );
 };
-
-export default CRWebView;

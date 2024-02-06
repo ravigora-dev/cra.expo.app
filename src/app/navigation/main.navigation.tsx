@@ -7,7 +7,7 @@ import ScannerScreen from '../screens/scanner.screen';
 
 const Stack = createNativeStackNavigator();
 
-export const MainNavigation = () => {
+export default function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>

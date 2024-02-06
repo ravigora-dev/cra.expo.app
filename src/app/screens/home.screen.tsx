@@ -6,7 +6,7 @@ import { AppScreens } from '~/models';
 import ScanButton from '../components/scan-button/scan-button.component';
 import CRWebView from '../components/webview/webview.component';
 
-const HomeScreen = () => {
+export default function HomeScreen() {
   const { navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
   const url = new URL(config.BASE_URL);
   url.searchParams.append('app', 'true');
@@ -14,9 +14,7 @@ const HomeScreen = () => {
   return (
     <>
       <CRWebView url={url.href} />
-      <ScanButton onPress={() => navigate(AppScreens.Scanner)} />
+      <ScanButton text='Scan' onPress={() => navigate(AppScreens.Scanner)} />
     </>
   );
 };
-
-export default HomeScreen;
