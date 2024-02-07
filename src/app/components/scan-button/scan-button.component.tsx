@@ -8,7 +8,7 @@ interface IScanButton {
   text: string;
 }
 
-const buttonSize = 90;
+const buttonSize = 70;
 const borderRadius = buttonSize / 2;
 
 export default function ScanButton({ onPress, text }: IScanButton) {
