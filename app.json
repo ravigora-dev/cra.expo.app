@@ -20,7 +20,7 @@
       "infoPlist": {
         "NSCameraUsageDescription": "We would like access the camera for the barcode scanner feature"
       },
-      "buildNumber": "6"
+      "buildNumber": "7"
     },
     "android": {
       "package": "com.crnative",
@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1158A3"
       },
-      "versionCode": 21
+      "versionCode": 22
     },
     "web": {
       "favicon": "./assets/favicon.png"
