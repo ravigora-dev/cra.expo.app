@@ -37,7 +37,7 @@ const Button = styled.TouchableOpacity<{ inserts: EdgeInsets; buttonLeftPosition
 const Text = styled.Text`
   color: ${Colors.WHITE};
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   text-transform: uppercase;
   margin-top: 3px;
   font-family: 'NeoSansStdMedium';
