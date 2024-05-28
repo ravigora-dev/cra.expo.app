@@ -1,13 +1,12 @@
 import { ParamListBase, useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PermissionResponse } from 'expo-barcode-scanner';
-import { BarCodeScanningResult, Camera } from 'expo-camera';
-import { CameraType } from 'expo-camera/build/Camera.types';
-import React, { useCallback, useState } from 'react';
-import { Platform, SafeAreaView, useWindowDimensions } from 'react-native';
+import { BarCodeScanningResult, Camera, CameraType, AutoFocus } from 'expo-camera/legacy';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Platform, SafeAreaView, useWindowDimensions, View, Text } from 'react-native';
 import BarcodeMask from 'react-native-barcode-mask';
 import { useQueryClient } from 'react-query';
-import styled from 'styled-components/native';
+import styled from 'styled-components';
 import { getVariantLink } from '~/app/utils/getVariantLink';
 import { AppScreens, VariantLink } from '~/models';
 import ScanButton from '../components/scan-button/scan-button.component';
@@ -21,6 +20,25 @@ export default function ScannerScreen() {
   const { navigate } = useNavigation<StackNavigationProp<ParamListBase>>();
   const isFocused = useIsFocused();
   const { width, height } = useWindowDimensions();
+  const [focus, setFocus] = useState<AutoFocus>(AutoFocus.on);
+
+  const updateCameraFocus = () => setFocus(AutoFocus.off);
+
+  // Set focus to off every 1 Second only for iOS.
+  useEffect(() => {
+    if (Platform.OS !== 'ios') return;
+
+    const interval = setInterval(updateCameraFocus, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // When focus changes to off, set it back to on after a delay only for iOS.
+  useEffect(() => {
+    if (Platform.OS !== 'ios' || focus !== AutoFocus.off) return;
+
+    const timeout = setTimeout(() => setFocus(AutoFocus.on), 1);
+    return () => clearTimeout(timeout);
+  }, [focus]);
 
   useFocusEffect(
     useCallback(() => {
@@ -57,11 +75,11 @@ export default function ScannerScreen() {
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return <ScanInstructionText>Requesting for camera permission</ScanInstructionText>;
   }
 
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <ScanInstructionText>No access to camera</ScanInstructionText>;
   }
 
   return (
@@ -70,19 +88,19 @@ export default function ScannerScreen() {
         <Scanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           type={CameraType.back}
-          style={{ height: height, width: width }}
-        >
+          autoFocus={focus}
+          style={{ height: height, width: width }}>
           {Platform.OS === 'ios' ? (
             <>
               <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
               <ScanButtonWrapper>
-                <ScanButton text='Tilbage' onPress={() => navigate(AppScreens.Home)} />
+                <ScanButton text="Tilbage" onPress={() => navigate(AppScreens.Home)} />
               </ScanButtonWrapper>
             </>
           ) : (
             <>
               <AndroidTabletWrapper>
-                <ScanButton text='Tilbage' onPress={() => navigate(AppScreens.Home)} />
+                <ScanButton text="Tilbage" onPress={() => navigate(AppScreens.Home)} />
               </AndroidTabletWrapper>
               <BarcodeMask width={300} height={120} edgeColor="transparent" showAnimatedLine={false} />
             </>
@@ -91,7 +109,7 @@ export default function ScannerScreen() {
       )}
     </Container>
   );
-};
+}
 
 const Container = styled(SafeAreaView)`
   flex-grow: 1;
@@ -106,20 +124,20 @@ const Scanner = styled(Camera)`
   height: 100px;
 `;
 
-const ScanButtonWrapper = styled.View`
+const ScanButtonWrapper = styled(View)`
   flex: 1;
   bottom: ${isTablet ? 14 : 25}px;
 `;
 
-const AndroidTabletWrapper = styled.View`
+const AndroidTabletWrapper = styled(View)`
   flex: 1;
   bottom: ${isTablet ? 14 : 0}px;
-`
+`;
 
-const Text = styled.Text`
+const ScanInstructionText = styled(Text)`
   color: ${Colors.WHITE};
   text-align: center;
   font-size: 16px;
-  text-Transform: uppercase;
+  text-transform: uppercase;
   margin-left: -6px;
 `;
